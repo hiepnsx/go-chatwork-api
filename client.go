@@ -2,6 +2,7 @@ package gochatwork
 
 type Client struct {
     config *config
+    http http
 }
 
 type config struct{
@@ -28,5 +29,10 @@ func newClient(token string, url string) *Client {
 
     return &Client{
         config: c,
+        http: &httpImp{},
     }
+}
+
+func (c *Client) MeRaw() []byte {
+    return c.http.Get()
 }
