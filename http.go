@@ -1,14 +1,13 @@
 package gochatwork
 
 type http interface {
-    Get() []byte
+	Get() []byte
 }
 
 // http interface
 type httpImp struct {
-
 }
 
 func (h *httpImp) Get() []byte {
-    return make([]byte, 0)
+	return make([]byte, 0)
 }
