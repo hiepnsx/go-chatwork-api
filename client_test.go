@@ -3,6 +3,7 @@ package gochatwork
 import (
 	. "github.com/smartystreets/goconvey/convey"
 	"testing"
+	"os"
 )
 
 func TestNew(t *testing.T) {
@@ -26,21 +27,36 @@ type stubHTTP struct {
 	GetByte  []byte
 }
 
-func (h *stubHTTP) Get() []byte {
+func (h *stubHTTP) Get(endPoint string, config *config) ([]byte, error) {
 	h.GetCount++
-	return h.GetByte
+	return h.GetByte, nil
 }
 
 func TestMe(t *testing.T) {
-	testToken := "testToken"
+    Convey("correct", t, func() {
+        testToken := "testToken"
 
-	client := New(testToken)
-	Convey("correct", t, func() {
-		stub := &stubHTTP{}
+        client := New(testToken)
+        stub := &stubHTTP{}
 		stub.GetByte = make([]byte, 0)
-		client.http = stub
+		client.connection = stub
 
-		So(len(client.MeRaw()), ShouldEqual, 0)
+        b, _ := client.MeRaw()
+
+		So(len(b), ShouldEqual, 0)
 		So(stub.GetCount, ShouldEqual, 1)
 	})
+
+    Convey("connect", t, func() {
+        token := os.Getenv("CHATWORK_API_TOKEN")
+		if token == "" {
+			t.Log("skip this test because no token")
+			return
+		}
+
+        client := New(token)
+        b, err := client.MeRaw()
+		So(len(b), ShouldNotEqual, 0)
+		So(err, ShouldBeNil)
+    })
 }

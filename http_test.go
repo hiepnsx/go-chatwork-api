@@ -8,6 +8,8 @@ import (
 func TestHttp(t *testing.T) {
 	Convey("correct", t, func() {
 		h := &httpImp{}
-		So(len(h.Get()), ShouldEqual, 0)
+
+        _, err := h.Get("", nil)
+		So(err.Error(), ShouldEqual, "No auth token")
 	})
 }

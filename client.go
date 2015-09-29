@@ -3,7 +3,7 @@ package gochatwork
 // Client is chatwork api client
 type Client struct {
 	config *config
-	http   http
+	connection   apiConnection
 }
 
 type config struct {
@@ -11,8 +11,8 @@ type config struct {
 	token string
 }
 
-var chatworkURL = "www.chatwork.com"
-var kddiChatworkURL = "kcw.kddi.ne.jp"
+var chatworkURL = "https://api.chatwork.com"
+var kddiChatworkURL = "https://kcw.kddi.ne.jp"
 
 // New return api client for www.chatwork.com
 func New(token string) *Client {
@@ -32,11 +32,11 @@ func newClient(token string, url string) *Client {
 
 	return &Client{
 		config: c,
-		http:   &httpImp{},
+		connection:   &httpImp{},
 	}
 }
 
 // MeRaw return /me response by []byte
-func (c *Client) MeRaw() []byte {
-	return c.http.Get()
+func (c *Client) MeRaw() ([]byte, error) {
+	return c.connection.Get("me", c.config)
 }
