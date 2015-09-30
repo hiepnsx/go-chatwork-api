@@ -4,8 +4,9 @@ Chatwork api client for golang.
 This support www.chatwork.com and kcw.kddi.ne.jp 
 
 # Install
+```bash
 $ go get github.com/ota42y/go-chatwork-api
-
+```
 
 # Usage
 
