@@ -79,3 +79,8 @@ func (c *Client) Me() (Me, error) {
 func (c *Client) MeRaw() ([]byte, error) {
 	return c.connection.Get("me", c.config)
 }
+
+// MyStatusRaw return my/status response by []byte
+func (c *Client) MyStatusRaw() ([]byte, error) {
+	return c.connection.Get("my/status", c.config)
+}
