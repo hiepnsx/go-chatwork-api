@@ -1,9 +1,10 @@
 package main
 
 import (
+    "os"
 	"fmt"
+
 	chatwork "github.com/ota42y/go-chatwork-api"
-	"os"
 )
 
 func main() {

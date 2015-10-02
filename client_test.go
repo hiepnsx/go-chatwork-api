@@ -25,10 +25,12 @@ func TestNew(t *testing.T) {
 type stubHTTP struct {
 	GetCount int
 	GetByte  []byte
+	GetEndPoint string
 }
 
 func (h *stubHTTP) Get(endPoint string, config *config) ([]byte, error) {
 	h.GetCount++
+	h.GetEndPoint = endPoint
 	return h.GetByte, nil
 }
 
@@ -66,6 +68,7 @@ func TestMe(t *testing.T) {
 			b, _ := client.MeRaw()
 			So(len(b), ShouldEqual, 0)
 			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "me")
 		})
 
 		Convey("Me", func() {
@@ -108,5 +111,23 @@ func TestMe(t *testing.T) {
 		b, err := client.MeRaw()
 		So(len(b), ShouldNotEqual, 0)
 		So(err, ShouldBeNil)
+	})
+}
+
+func TestMyStatus(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		Convey("MyStatusRaw", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = make([]byte, 0)
+			client.connection = stub
+
+			b, _ := client.MyStatusRaw()
+			So(len(b), ShouldEqual, 0)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "my/status")
+		})
 	})
 }
