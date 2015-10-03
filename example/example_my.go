@@ -15,9 +15,9 @@ func main() {
     }
 
     client := chatwork.New(token)
-    b, err := client.MyStatusRaw()
+    status, err := client.MyStatus()
     if err == nil {
-        fmt.Println(string(b))
+        fmt.Println(status)
     } else {
         fmt.Println(err)
     }
