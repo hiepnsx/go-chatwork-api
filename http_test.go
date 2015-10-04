@@ -2,8 +2,8 @@ package gochatwork
 
 import (
 	. "github.com/smartystreets/goconvey/convey"
-	"testing"
 	"net/url"
+	"testing"
 )
 
 func TestHttp(t *testing.T) {

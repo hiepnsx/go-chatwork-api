@@ -1,8 +1,8 @@
 package main
 
 import (
-    "os"
 	"fmt"
+	"os"
 
 	chatwork "github.com/ota42y/go-chatwork-api"
 )
