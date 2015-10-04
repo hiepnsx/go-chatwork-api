@@ -4,6 +4,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"os"
 	"testing"
+	"net/url"
 )
 
 func TestNew(t *testing.T) {
@@ -26,11 +27,13 @@ type stubHTTP struct {
 	GetCount int
 	GetByte  []byte
 	GetEndPoint string
+	GetParams url.Values
 }
 
-func (h *stubHTTP) Get(endPoint string, config *config) ([]byte, error) {
+func (h *stubHTTP) Get(endPoint string, params url.Values, config *config) ([]byte, error) {
 	h.GetCount++
 	h.GetEndPoint = endPoint
+	h.GetParams = params
 	return h.GetByte, nil
 }
 
@@ -152,6 +155,30 @@ func TestMyStatus(t *testing.T) {
 			So(len(b), ShouldEqual, 0)
 			So(stub.GetCount, ShouldEqual, 1)
 			So(stub.GetEndPoint, ShouldEqual, "my/status")
+		})
+	})
+}
+
+
+func TestMyTasks(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		Convey("MyTasksRaw", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = make([]byte, 0)
+			client.connection = stub
+
+			params := url.Values{}
+			params.Add("assigned_by_account_id", "42")
+			params.Add("status", "done")
+
+			b, _ := client.MyTasksRaw(params)
+			So(len(b), ShouldEqual, 0)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "my/tasks")
+			So(stub.GetParams, ShouldResemble, params)
 		})
 	})
 }

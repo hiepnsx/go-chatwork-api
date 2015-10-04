@@ -2,6 +2,7 @@ package gochatwork
 
 import (
 	"encoding/json"
+	"net/url"
 )
 
 // Client is chatwork api client
@@ -77,7 +78,7 @@ func (c *Client) Me() (Me, error) {
 
 // MeRaw return /me response by []byte
 func (c *Client) MeRaw() ([]byte, error) {
-	return c.connection.Get("me", c.config)
+	return c.connection.Get("me", url.Values{}, c.config)
 }
 
 // Status is /me response struct
@@ -105,5 +106,10 @@ func (c *Client) MyStatus() (Status, error) {
 
 // MyStatusRaw return my/status response by []byte
 func (c *Client) MyStatusRaw() ([]byte, error) {
-	return c.connection.Get("my/status", c.config)
+	return c.connection.Get("my/status", url.Values{},c.config)
+}
+
+// MyTaskRaw return my/tasks response by []byte
+func (c *Client) MyTasksRaw(params url.Values) ([]byte, error) {
+	return c.connection.Get("my/tasks", params, c.config)
 }
