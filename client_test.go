@@ -119,6 +119,30 @@ func TestMyStatus(t *testing.T) {
 	client := New(testToken)
 
 	Convey("correct", t, func() {
+		correctJSON := `{
+		"unread_room_num":4,
+		"mention_room_num":42,
+		"mytask_room_num":424,
+		"unread_num":4242,
+		"mention_num":42424,
+		"mytask_num":424242
+		}`
+
+		Convey("MyStatus", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = []byte(correctJSON)
+			client.connection = stub
+
+			status, err := client.MyStatus()
+			So(err,ShouldBeNil)
+			So(status.UnreadRoomNum,ShouldEqual,4)
+			So(status.MentionRoomNum,ShouldEqual,42)
+			So(status.MytaskRoomNum,ShouldEqual,424)
+			So(status.UnreadNum,ShouldEqual,4242)
+			So(status.MentionNum,ShouldEqual,42424)
+			So(status.MytaskNum,ShouldEqual,424242)
+		})
+
 		Convey("MyStatusRaw", func() {
 			stub := &stubHTTP{}
 			stub.GetByte = make([]byte, 0)

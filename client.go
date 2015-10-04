@@ -66,7 +66,7 @@ type Me struct {
 func (c *Client) Me() (Me, error) {
 	var me Me
 
-	b, err := c.connection.Get("me", c.config)
+	b, err := c.MeRaw()
 	if err != nil {
 		return me, err
 	}
@@ -78,6 +78,29 @@ func (c *Client) Me() (Me, error) {
 // MeRaw return /me response by []byte
 func (c *Client) MeRaw() ([]byte, error) {
 	return c.connection.Get("me", c.config)
+}
+
+// Status is /me response struct
+type Status struct {
+	UnreadRoomNum int64 `json:"unread_room_num"`
+	MentionRoomNum int64 `json:"mention_room_num"`
+	MytaskRoomNum int64 `json:"mytask_room_num"`
+	UnreadNum int64 `json:"unread_num"`
+	MentionNum int64 `json:"mention_num"`
+	MytaskNum int64 `json:"mytask_num"`
+}
+
+// MyStatus return my/status response by Status struct
+func (c *Client) MyStatus() (Status, error) {
+	var status Status
+
+	b, err := c.MyStatusRaw()
+	if err != nil {
+		return status, err
+	}
+
+	err = json.Unmarshal(b, &status)
+	return status, err
 }
 
 // MyStatusRaw return my/status response by []byte
