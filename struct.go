@@ -1,0 +1,58 @@
+package gochatwork
+
+// Me is /me response struct
+type Me struct {
+    AccountID        int64 `json:"account_id"`
+    RoomID           int64 `json:"room_id"`
+    Name             string
+    ChatworkID       string `json:"chatwork_id"`
+    OrganizationID   int64  `json:"organization_id"`
+    OrganizationName string `json:"organization_name"`
+    Department       string
+    Title            string
+    URL              string
+    Introduction     string
+    Mail             string
+    TelOrganization  string `json:"tel_organization"`
+    TelExtension     string `json:"tel_extension"`
+    TelMobile        string `json:"tel_mobile"`
+    Skype            string
+    Facebook         string
+    Twitter          string
+    AvatarImageURL   string `json:"avatar_image_url"`
+}
+
+// Status is /me response struct
+type Status struct {
+    UnreadRoomNum  int64 `json:"unread_room_num"`
+    MentionRoomNum int64 `json:"mention_room_num"`
+    MytaskRoomNum  int64 `json:"mytask_room_num"`
+    UnreadNum      int64 `json:"unread_num"`
+    MentionNum     int64 `json:"mention_num"`
+    MytaskNum      int64 `json:"mytask_num"`
+}
+
+// Room is room struct
+type Room struct {
+    RoomID   int64 `json:"room_id"`
+    Name     string
+    IconPath string `json:"icon_path"`
+}
+
+// Account is task struct
+type Account struct {
+    AccountID      int64 `json:"account_id"`
+    Name           string
+    AvatarImageURL string `json:"avatar_image_url"`
+}
+
+// Task is task struct
+type Task struct {
+    TaskID            int64 `json:"task_id"`
+    Room              Room
+    AssignedByAccount Account `json:"assigned_by_account"`
+    MessageID         int64   `json:"message_id"`
+    Body              string
+    LimitTime         int64 `json:"limit_time"`
+    Status            string
+}
