@@ -15,10 +15,17 @@ func main() {
 	}
 
 	client := chatwork.New(token)
-
+	
 	rooms, err := client.Rooms()
 	if err == nil {
 		fmt.Println(rooms)
+	} else {
+		fmt.Println(err)
+	}
+
+	b, err := client.RoomRaw(42)
+	if err == nil {
+		fmt.Println(string(b))
 	} else {
 		fmt.Println(err)
 	}

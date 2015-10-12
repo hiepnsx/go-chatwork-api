@@ -125,3 +125,22 @@ func TestRooms(t *testing.T) {
 		})
 	})
 }
+
+
+func TestRoom(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		Convey("RoomRaw", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = make([]byte, 0)
+			client.connection = stub
+
+			b, _ := client.RoomRaw(42)
+			So(len(b), ShouldEqual, 0)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "rooms/42")
+		})
+	})
+}
