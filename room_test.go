@@ -69,9 +69,6 @@ func TestRooms(t *testing.T) {
 			stub.GetByte = []byte(correctJSON)
 			client.connection = stub
 
-			var r Room
-			r.Type = "aaa"
-
 			rooms, err := client.Rooms()
 
 			So(stub.GetCount, ShouldEqual, 1)
@@ -126,12 +123,58 @@ func TestRooms(t *testing.T) {
 	})
 }
 
-
 func TestRoom(t *testing.T) {
 	testToken := "testToken"
 	client := New(testToken)
 
 	Convey("correct", t, func() {
+		Convey("Rooms", func() {
+			correctJSON := `
+{
+  "room_id":1,
+  "name":"string_2",
+  "type":"direct",
+  "role":"string_3",
+  "sticky":true,
+  "unread_num":4,
+  "mention_num":5,
+  "mytask_num":6,
+  "message_num":7,
+  "file_num":8,
+  "task_num":9,
+  "icon_path":"string_10",
+  "description":"string_11",
+  "last_update_time":12
+}
+`
+			stub := &stubHTTP{}
+			stub.GetByte = []byte(correctJSON)
+			client.connection = stub
+
+			room, err := client.Room(41)
+			So(err, ShouldBeNil)
+
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "rooms/41")
+
+			v := &TestValue{}
+			v.Count = 1
+			So(room.RoomID, ShouldEqual, v.GetInt64())
+			So(room.Name, ShouldEqual, v.GetString())
+			So(room.Type, ShouldEqual, "direct")
+			So(room.Role, ShouldEqual, v.GetString())
+			So(room.Sticky, ShouldBeTrue)
+			So(room.UnreadNum, ShouldEqual, v.GetInt64())
+			So(room.MentionNum, ShouldEqual, v.GetInt64())
+			So(room.MytaskNum, ShouldEqual, v.GetInt64())
+			So(room.MessageNum, ShouldEqual, v.GetInt64())
+			So(room.FileNum, ShouldEqual, v.GetInt64())
+			So(room.TaskNum, ShouldEqual, v.GetInt64())
+			So(room.IconPath, ShouldEqual, v.GetString())
+			So(room.Description, ShouldEqual, v.GetString())
+			So(room.LastUpdateTime, ShouldEqual, v.GetInt64())
+		})
+
 		Convey("RoomRaw", func() {
 			stub := &stubHTTP{}
 			stub.GetByte = make([]byte, 0)

@@ -15,7 +15,7 @@ func main() {
 	}
 
 	client := chatwork.New(token)
-	
+
 	rooms, err := client.Rooms()
 	if err == nil {
 		fmt.Println(rooms)
@@ -23,9 +23,9 @@ func main() {
 		fmt.Println(err)
 	}
 
-	b, err := client.RoomRaw(42)
+	room, err := client.Room(42)
 	if err == nil {
-		fmt.Println(string(b))
+		fmt.Println(room)
 	} else {
 		fmt.Println(err)
 	}

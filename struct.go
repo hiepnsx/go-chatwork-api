@@ -46,7 +46,8 @@ type Room struct {
 	FileNum        int64  `json:"file_num"`
 	TaskNum        int64  `json:"task_num"`
 	IconPath       string `json:"icon_path"`
-	LastUpdateTime int64  `json:"last_update_time"`
+	Description    string
+	LastUpdateTime int64 `json:"last_update_time"`
 }
 
 // Account is task struct
