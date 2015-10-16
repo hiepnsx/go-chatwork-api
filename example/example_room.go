@@ -29,4 +29,11 @@ func main() {
 	} else {
 		fmt.Println(err)
 	}
+
+	b, err := client.PostMassageRaw(42, "test")
+	if err == nil {
+		fmt.Println(string(b))
+	} else {
+		fmt.Println(err)
+	}
 }

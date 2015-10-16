@@ -41,3 +41,12 @@ func (c *Client) Room(roomID int64) (Room, error) {
 func (c *Client) RoomRaw(roomID int64) ([]byte, error) {
 	return c.connection.Get(fmt.Sprintf("rooms/%d", roomID), url.Values{}, c.config)
 }
+
+//PostMassageRaw(42, "test message")
+
+// PostMassageRaw return rooms/room_id response by []byte
+func (c *Client) PostMassageRaw(roomID int64, message string) ([]byte, error) {
+	params := url.Values{}
+	params.Add("body", message)
+	return c.connection.Post(fmt.Sprintf("rooms/%d/messages", roomID), params, c.config)
+}

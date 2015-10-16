@@ -27,6 +27,11 @@ type stubHTTP struct {
 	GetByte     []byte
 	GetEndPoint string
 	GetParams   url.Values
+
+	PostCount    int
+	PostByte     []byte
+	PostEndPoint string
+	PostParams   url.Values
 }
 
 func (h *stubHTTP) Get(endPoint string, params url.Values, config *config) ([]byte, error) {
@@ -34,4 +39,11 @@ func (h *stubHTTP) Get(endPoint string, params url.Values, config *config) ([]by
 	h.GetEndPoint = endPoint
 	h.GetParams = params
 	return h.GetByte, nil
+}
+
+func (h *stubHTTP) Post(endPoint string, params url.Values, config *config) ([]byte, error) {
+	h.PostCount++
+	h.PostEndPoint = endPoint
+	h.PostParams = params
+	return h.PostByte, nil
 }
