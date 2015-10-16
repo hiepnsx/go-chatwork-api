@@ -30,9 +30,9 @@ func main() {
 		fmt.Println(err)
 	}
 
-	b, err := client.PostMassageRaw(42, "test")
+	messageID, err := client.PostMassage(42, "test")
 	if err == nil {
-		fmt.Println(string(b))
+		fmt.Println(messageID)
 	} else {
 		fmt.Println(err)
 	}

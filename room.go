@@ -42,9 +42,22 @@ func (c *Client) RoomRaw(roomID int64) ([]byte, error) {
 	return c.connection.Get(fmt.Sprintf("rooms/%d", roomID), url.Values{}, c.config)
 }
 
-//PostMassageRaw(42, "test message")
+// PostMassage post message to rooms/room_id/messages and response by int64
+func (c *Client) PostMassage(roomID int64, message string) (int64, error) {
+	var responseJSON = struct {
+		MessageID int64 `json:"message_id"`
+	}{}
 
-// PostMassageRaw return rooms/room_id response by []byte
+	b, err := c.PostMassageRaw(roomID, message)
+	if err != nil {
+		return 0, err
+	}
+
+	err = json.Unmarshal(b, &responseJSON)
+	return responseJSON.MessageID, err
+}
+
+// PostMassageRaw post message to rooms/room_id/messages and response by []byte
 func (c *Client) PostMassageRaw(roomID int64, message string) ([]byte, error) {
 	params := url.Values{}
 	params.Add("body", message)
