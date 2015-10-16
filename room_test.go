@@ -193,13 +193,28 @@ func TestPostMessage(t *testing.T) {
 	client := New(testToken)
 
 	Convey("correct", t, func() {
+		correctJSON := `{"message_id":42}`
+		Convey("PostMessage", func() {
+			stub := &stubHTTP{}
+			stub.PostByte = []byte(correctJSON)
+			client.connection = stub
+
+			messageID, err := client.PostMassage(42, "test message")
+			So(err, ShouldBeNil)
+			So(stub.PostCount, ShouldEqual, 1)
+			So(stub.PostEndPoint, ShouldEqual, "rooms/42/messages")
+			So(stub.PostParams.Get("body"), ShouldEqual, "test message")
+
+			So(messageID, ShouldEqual, 42)
+		})
+
 		Convey("PostMessageRaw", func() {
 			stub := &stubHTTP{}
-			stub.GetByte = make([]byte, 0)
+			stub.PostByte = []byte(correctJSON)
 			client.connection = stub
 
 			b, _ := client.PostMassageRaw(42, "test message")
-			So(len(b), ShouldEqual, 0)
+			So(string(b), ShouldEqual, correctJSON)
 			So(stub.PostCount, ShouldEqual, 1)
 			So(stub.PostEndPoint, ShouldEqual, "rooms/42/messages")
 			So(stub.PostParams.Get("body"), ShouldEqual, "test message")
