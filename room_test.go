@@ -187,3 +187,22 @@ func TestRoom(t *testing.T) {
 		})
 	})
 }
+
+func TestPostMessage(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		Convey("PostMessageRaw", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = make([]byte, 0)
+			client.connection = stub
+
+			b, _ := client.PostMassageRaw(42, "test message")
+			So(len(b), ShouldEqual, 0)
+			So(stub.PostCount, ShouldEqual, 1)
+			So(stub.PostEndPoint, ShouldEqual, "rooms/42/messages")
+			So(stub.PostParams.Get("body"), ShouldEqual, "test message")
+		})
+	})
+}
