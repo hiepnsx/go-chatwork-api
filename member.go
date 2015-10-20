@@ -1,7 +1,6 @@
 package gochatwork
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/url"
 )
@@ -11,11 +10,7 @@ func (c *Client) Members(roomID int64) ([]Account, error) {
 	var accounts []Account
 
 	b, err := c.MembersRaw(roomID)
-	if err != nil {
-		return accounts, err
-	}
-
-	err = json.Unmarshal(b, &accounts)
+	err = setSturctFromJSON(b, &accounts, err)
 	return accounts, err
 }
 
