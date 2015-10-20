@@ -1,7 +1,6 @@
 package gochatwork
 
 import (
-	"encoding/json"
 	"net/url"
 )
 
@@ -10,11 +9,7 @@ func (c *Client) MyStatus() (Status, error) {
 	var status Status
 
 	b, err := c.MyStatusRaw()
-	if err != nil {
-		return status, err
-	}
-
-	err = json.Unmarshal(b, &status)
+	err = setSturctFromJSON(b, &status, err)
 	return status, err
 }
 
@@ -28,11 +23,7 @@ func (c *Client) MyTasks(params url.Values) ([]Task, error) {
 	var tasks []Task
 
 	b, err := c.MyTasksRaw(params)
-	if err != nil {
-		return tasks, err
-	}
-
-	err = json.Unmarshal(b, &tasks)
+	err = setSturctFromJSON(b, &tasks, err)
 	return tasks, err
 }
 

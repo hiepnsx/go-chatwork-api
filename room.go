@@ -1,7 +1,6 @@
 package gochatwork
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/url"
 )
@@ -11,11 +10,7 @@ func (c *Client) Rooms() ([]Room, error) {
 	var rooms []Room
 
 	b, err := c.RoomsRaw()
-	if err != nil {
-		return rooms, err
-	}
-
-	err = json.Unmarshal(b, &rooms)
+	err = setSturctFromJSON(b, &rooms, err)
 	return rooms, err
 }
 
@@ -29,11 +24,7 @@ func (c *Client) Room(roomID int64) (Room, error) {
 	var room Room
 
 	b, err := c.RoomRaw(roomID)
-	if err != nil {
-		return room, err
-	}
-
-	err = json.Unmarshal(b, &room)
+	err = setSturctFromJSON(b, &room, err)
 	return room, err
 }
 
@@ -49,11 +40,7 @@ func (c *Client) PostMassage(roomID int64, message string) (int64, error) {
 	}{}
 
 	b, err := c.PostMassageRaw(roomID, message)
-	if err != nil {
-		return 0, err
-	}
-
-	err = json.Unmarshal(b, &responseJSON)
+	err = setSturctFromJSON(b, &responseJSON, err)
 	return responseJSON.MessageID, err
 }
 

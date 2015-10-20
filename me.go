@@ -1,7 +1,6 @@
 package gochatwork
 
 import (
-	"encoding/json"
 	"net/url"
 )
 
@@ -10,11 +9,7 @@ func (c *Client) Me() (Me, error) {
 	var me Me
 
 	b, err := c.MeRaw()
-	if err != nil {
-		return me, err
-	}
-
-	err = json.Unmarshal(b, &me)
+	err = setSturctFromJSON(b, &me, err)
 	return me, err
 }
 
