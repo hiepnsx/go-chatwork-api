@@ -52,9 +52,14 @@ type Room struct {
 
 // Account is task struct
 type Account struct {
-	AccountID      int64 `json:"account_id"`
-	Name           string
-	AvatarImageURL string `json:"avatar_image_url"`
+	AccountID        int64 `json:"account_id"`
+	Name             string
+	Role             string
+	ChatworkID       string `json:"chatwork_id"`
+	OrganizationID   int64  `json:"organization_id"`
+	OrganizationName string `json:"organization_name"`
+	Department       string
+	AvatarImageURL   string `json:"avatar_image_url"`
 }
 
 // Task is task struct

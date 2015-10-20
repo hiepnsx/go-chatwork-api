@@ -16,10 +16,11 @@ func main() {
 
 	client := chatwork.New(token)
 
-	b, err := client.MembersRaw(42)
+	accounts, err := client.Members(42)
 	if err == nil {
-		fmt.Println(string(b))
+		fmt.Println(accounts)
 	} else {
+		fmt.Println("error")
 		fmt.Println(err)
 	}
 }
