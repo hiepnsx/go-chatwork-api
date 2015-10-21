@@ -33,19 +33,19 @@ func (c *Client) RoomRaw(roomID int64) ([]byte, error) {
 	return c.connection.Get(fmt.Sprintf("rooms/%d", roomID), url.Values{}, c.config)
 }
 
-// PostMassage post message to rooms/room_id/messages and response by int64
-func (c *Client) PostMassage(roomID int64, message string) (int64, error) {
+// PostMessage post message to rooms/room_id/messages and response by int64
+func (c *Client) PostMessage(roomID int64, message string) (int64, error) {
 	var responseJSON = struct {
 		MessageID int64 `json:"message_id"`
 	}{}
 
-	b, err := c.PostMassageRaw(roomID, message)
+	b, err := c.PostMessageRaw(roomID, message)
 	err = setSturctFromJSON(b, &responseJSON, err)
 	return responseJSON.MessageID, err
 }
 
-// PostMassageRaw post message to rooms/room_id/messages and response by []byte
-func (c *Client) PostMassageRaw(roomID int64, message string) ([]byte, error) {
+// PostMessageRaw post message to rooms/room_id/messages and response by []byte
+func (c *Client) PostMessageRaw(roomID int64, message string) ([]byte, error) {
 	params := url.Values{}
 	params.Add("body", message)
 	return c.connection.Post(fmt.Sprintf("rooms/%d/messages", roomID), params, c.config)
