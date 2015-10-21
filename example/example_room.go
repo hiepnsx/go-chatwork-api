@@ -37,7 +37,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	messageID, err := client.PostMassage(42, "test")
+	messageID, err := client.PostMessage(42, "test")
 	if err == nil {
 		fmt.Println(messageID)
 	} else {

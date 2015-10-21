@@ -199,7 +199,7 @@ func TestPostMessage(t *testing.T) {
 			stub.PostByte = []byte(correctJSON)
 			client.connection = stub
 
-			messageID, err := client.PostMassage(42, "test message")
+			messageID, err := client.PostMessage(42, "test message")
 			So(err, ShouldBeNil)
 			So(stub.PostCount, ShouldEqual, 1)
 			So(stub.PostEndPoint, ShouldEqual, "rooms/42/messages")
@@ -213,7 +213,7 @@ func TestPostMessage(t *testing.T) {
 			stub.PostByte = []byte(correctJSON)
 			client.connection = stub
 
-			b, _ := client.PostMassageRaw(42, "test message")
+			b, _ := client.PostMessageRaw(42, "test message")
 			So(string(b), ShouldEqual, correctJSON)
 			So(stub.PostCount, ShouldEqual, 1)
 			So(stub.PostEndPoint, ShouldEqual, "rooms/42/messages")
