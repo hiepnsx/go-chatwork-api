@@ -221,3 +221,23 @@ func TestPostMessage(t *testing.T) {
 		})
 	})
 }
+
+func TestGetMessage(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		correctJSON := ``
+		Convey("GettMessageRaw", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = []byte(correctJSON)
+			client.connection = stub
+
+			b, _ := client.GetMessageRaw(42, true)
+			So(string(b), ShouldEqual, correctJSON)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "rooms/42/messages")
+			So(stub.GetParams.Get("force"), ShouldEqual, "1")
+		})
+	})
+}

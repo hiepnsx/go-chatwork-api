@@ -50,3 +50,13 @@ func (c *Client) PostMassageRaw(roomID int64, message string) ([]byte, error) {
 	params.Add("body", message)
 	return c.connection.Post(fmt.Sprintf("rooms/%d/messages", roomID), params, c.config)
 }
+
+// GetMessageRaw get message to rooms/room_id/messages and response by []byte
+func (c *Client) GetMessageRaw(roomID int64, force bool) ([]byte, error) {
+	params := url.Values{}
+	if force {
+		params.Add("force", "1")
+	}
+
+	return c.connection.Get(fmt.Sprintf("rooms/%d/messages", roomID), params, c.config)
+}

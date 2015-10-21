@@ -1,6 +1,6 @@
 package gochatwork
 
-import 	"encoding/json"
+import "encoding/json"
 
 // Me is /me response struct
 type Me struct {
@@ -75,7 +75,7 @@ type Task struct {
 	Status            string
 }
 
-func setSturctFromJSON(b []byte, v interface{}, err error) error{
+func setSturctFromJSON(b []byte, v interface{}, err error) error {
 	if err != nil {
 		return err
 	}
