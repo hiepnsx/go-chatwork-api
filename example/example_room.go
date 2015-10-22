@@ -16,9 +16,9 @@ func main() {
 
 	client := chatwork.New(token)
 
-	b, err := client.GetMessageRaw(42, true)
+	messages, err := client.GetMessage(42, true)
 	if err == nil {
-		fmt.Println(string(b))
+		fmt.Println(messages)
 	} else {
 		fmt.Println(err)
 	}
