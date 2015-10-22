@@ -51,6 +51,15 @@ func (c *Client) PostMessageRaw(roomID int64, message string) ([]byte, error) {
 	return c.connection.Post(fmt.Sprintf("rooms/%d/messages", roomID), params, c.config)
 }
 
+// GetMessage get message to rooms/room_id/messages and response by []Message
+func (c *Client) GetMessage(roomID int64, force bool) ([]Message, error) {
+	var messages []Message
+
+	b, err := c.GetMessageRaw(roomID, force)
+	err = setSturctFromJSON(b, &messages, err)
+	return messages, err
+}
+
 // GetMessageRaw get message to rooms/room_id/messages and response by []byte
 func (c *Client) GetMessageRaw(roomID int64, force bool) ([]byte, error) {
 	params := url.Values{}
