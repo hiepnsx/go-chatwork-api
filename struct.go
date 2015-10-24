@@ -1,6 +1,8 @@
 package gochatwork
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 // Me is /me response struct
 type Me struct {
@@ -73,6 +75,15 @@ type Task struct {
 	Body              string
 	LimitTime         int64 `json:"limit_time"`
 	Status            string
+}
+
+// Message is message struct
+type Message struct {
+	MessageID  int64 `json:"message_id"`
+	Account    Account
+	Body       string
+	SendTime   int64 `json:"send_time"`
+	UpdateTime int64 `json:"update_time"`
 }
 
 func setSturctFromJSON(b []byte, v interface{}, err error) error {
