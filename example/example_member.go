@@ -15,8 +15,18 @@ func main() {
 	}
 
 	client := chatwork.New(token)
+	admin := []int64{1}
+	member := []int64{2}
+	var read []int64
+	b, err := client.PutMembersRaw(42, admin, member, read)
+	if err == nil {
+		fmt.Println(string(b))
+	} else {
+		fmt.Println("error")
+		fmt.Println(err)
+	}
 
-	accounts, err := client.Members(42)
+	accounts, err := client.GetMembers(42)
 	if err == nil {
 		fmt.Println(accounts)
 	} else {
