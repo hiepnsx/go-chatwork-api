@@ -6,7 +6,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestMembers(t *testing.T) {
+func TestGetMembers(t *testing.T) {
 	testToken := "testToken"
 	client := New(testToken)
 
@@ -34,12 +34,12 @@ func TestMembers(t *testing.T) {
   }
 ]
 `
-		Convey("Members", func() {
+		Convey("GetMembers", func() {
 			stub := &stubHTTP{}
 			stub.GetByte = []byte(correctJSON)
 			client.connection = stub
 
-			accounts, err := client.Members(42)
+			accounts, err := client.GetMembers(42)
 
 			So(stub.GetCount, ShouldEqual, 1)
 			So(stub.GetEndPoint, ShouldEqual, "rooms/42/members")
@@ -70,15 +70,41 @@ func TestMembers(t *testing.T) {
 			So(account.AvatarImageURL, ShouldEqual, "https://"+v.GetString())
 		})
 
-		Convey("MembersRaw", func() {
+		Convey("GetMembersRaw", func() {
 			stub := &stubHTTP{}
 			stub.GetByte = []byte(correctJSON)
 			client.connection = stub
 
-			b, _ := client.MembersRaw(42)
+			b, _ := client.GetMembersRaw(42)
 			So(string(b), ShouldEqual, correctJSON)
 			So(stub.GetCount, ShouldEqual, 1)
 			So(stub.GetEndPoint, ShouldEqual, "rooms/42/members")
+		})
+	})
+}
+
+func TestPutMembers(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		correctJSON := ``
+		Convey("PutMembersRaw", func() {
+			stub := &stubHTTP{}
+			stub.PutByte = []byte(correctJSON)
+			client.connection = stub
+
+			membersAdminIDs := []int64{1, 2}
+			membersMemberIDs := []int64{3}
+			var membersReadonlyIDs []int64
+
+			b, _ := client.PutMembersRaw(42, membersAdminIDs, membersMemberIDs, membersReadonlyIDs)
+			So(string(b), ShouldEqual, correctJSON)
+			So(stub.PutCount, ShouldEqual, 1)
+			So(stub.PutEndPoint, ShouldEqual, "rooms/42/members")
+			So(stub.PutParams.Get("members_admin_ids"), ShouldEqual, "1,2")
+			So(stub.PutParams.Get("members_member_ids"), ShouldEqual, "3")
+			So(stub.PutParams.Get("members_readonly_ids"), ShouldEqual, "")
 		})
 	})
 }

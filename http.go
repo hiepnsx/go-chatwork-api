@@ -12,6 +12,7 @@ var apiVersion = "/v1/"
 type apiConnection interface {
 	Get(endPoint string, params url.Values, config *config) ([]byte, error)
 	Post(endPoint string, params url.Values, config *config) ([]byte, error)
+	Put(endPoint string, params url.Values, config *config) ([]byte, error)
 }
 
 // http interface
@@ -24,6 +25,10 @@ func (h *httpImp) Get(endPoint string, params url.Values, config *config) ([]byt
 
 func (h *httpImp) Post(endPoint string, params url.Values, config *config) ([]byte, error) {
 	return h.connection("POST", endPoint, params, config)
+}
+
+func (h *httpImp) Put(endPoint string, params url.Values, config *config) ([]byte, error) {
+	return h.connection("PUT", endPoint, params, config)
 }
 
 func (h *httpImp) connection(method string, endPoint string, params url.Values, config *config) ([]byte, error) {
