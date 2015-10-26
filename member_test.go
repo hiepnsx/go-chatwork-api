@@ -88,7 +88,29 @@ func TestPutMembers(t *testing.T) {
 	client := New(testToken)
 
 	Convey("correct", t, func() {
-		correctJSON := ``
+		correctJSON := `{"admin":[1],"member":[2],"readonly":[3]}`
+		Convey("PutMembers", func() {
+			stub := &stubHTTP{}
+			stub.PutByte = []byte(correctJSON)
+			client.connection = stub
+
+			membersAdminIDs := []int64{1}
+			membersMemberIDs := []int64{2}
+			membersReadonlyIDs := []int64{3}
+
+			admin, member, readonly, err := client.PutMembers(42, membersAdminIDs, membersMemberIDs, membersReadonlyIDs)
+			So(err, ShouldBeNil)
+			So(stub.PutCount, ShouldEqual, 1)
+			So(stub.PutEndPoint, ShouldEqual, "rooms/42/members")
+			So(stub.PutParams.Get("members_admin_ids"), ShouldEqual, "1")
+			So(stub.PutParams.Get("members_member_ids"), ShouldEqual, "2")
+			So(stub.PutParams.Get("members_readonly_ids"), ShouldEqual, "3")
+
+			So(admin, ShouldResemble, membersAdminIDs)
+			So(member, ShouldResemble, membersMemberIDs)
+			So(readonly, ShouldResemble, membersReadonlyIDs)
+		})
+
 		Convey("PutMembersRaw", func() {
 			stub := &stubHTTP{}
 			stub.PutByte = []byte(correctJSON)
@@ -98,7 +120,8 @@ func TestPutMembers(t *testing.T) {
 			membersMemberIDs := []int64{3}
 			var membersReadonlyIDs []int64
 
-			b, _ := client.PutMembersRaw(42, membersAdminIDs, membersMemberIDs, membersReadonlyIDs)
+			b, err := client.PutMembersRaw(42, membersAdminIDs, membersMemberIDs, membersReadonlyIDs)
+			So(err, ShouldBeNil)
 			So(string(b), ShouldEqual, correctJSON)
 			So(stub.PutCount, ShouldEqual, 1)
 			So(stub.PutEndPoint, ShouldEqual, "rooms/42/members")
