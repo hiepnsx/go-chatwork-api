@@ -16,11 +16,13 @@ func main() {
 
 	client := chatwork.New(token)
 	admin := []int64{1}
-	member := []int64{2}
-	var read []int64
-	b, err := client.PutMembersRaw(42, admin, member, read)
+	var member []int64
+	read := []int64{2}
+	ad, me, re, err := client.PutMembers(42, admin, member, read)
 	if err == nil {
-		fmt.Println(string(b))
+		fmt.Println(ad)
+		fmt.Println(me)
+		fmt.Println(re)
 	} else {
 		fmt.Println("error")
 		fmt.Println(err)

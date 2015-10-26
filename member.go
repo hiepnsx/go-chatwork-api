@@ -20,6 +20,19 @@ func (c *Client) GetMembersRaw(roomID int64) ([]byte, error) {
 	return c.connection.Get(fmt.Sprintf("rooms/%d/members", roomID), url.Values{}, c.config)
 }
 
+// PutMembers return PUT rooms/room_id/members response
+func (c *Client) PutMembers(roomID int64, membersAdminIDs []int64, membersMemberIDs []int64, membersReadonlyIDs []int64) (admin []int64, member []int64, readonly []int64, err error) {
+	var responseJSON = struct {
+		Admin    []int64
+		Member   []int64
+		Readonly []int64
+	}{}
+
+	b, err := c.PutMembersRaw(roomID, membersAdminIDs, membersMemberIDs, membersReadonlyIDs)
+	err = setSturctFromJSON(b, &responseJSON, err)
+	return responseJSON.Admin, responseJSON.Member, responseJSON.Readonly, err
+}
+
 // PutMembersRaw return PUT rooms/room_id/members response by []byte
 func (c *Client) PutMembersRaw(roomID int64, membersAdminIDs []int64, membersMemberIDs []int64, membersReadonlyIDs []int64) ([]byte, error) {
 	params := url.Values{}
