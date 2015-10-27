@@ -188,6 +188,28 @@ func TestRoom(t *testing.T) {
 	})
 }
 
+func TestPutRooms(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		Convey("PutRoomsRaw", func() {
+			stub := &stubHTTP{}
+			stub.PutByte = make([]byte, 0)
+			client.connection = stub
+
+			b, _ := client.PutRoomsRaw(42, "desc", "meeting", "name")
+			So(len(b), ShouldEqual, 0)
+			So(stub.PutCount, ShouldEqual, 1)
+			So(stub.PutEndPoint, ShouldEqual, "rooms/42")
+
+			So(stub.PutParams.Get("description"), ShouldEqual, "desc")
+			So(stub.PutParams.Get("icon_preset"), ShouldEqual, "meeting")
+			So(stub.PutParams.Get("name"), ShouldEqual, "name")
+		})
+	})
+}
+
 func TestPostMessage(t *testing.T) {
 	testToken := "testToken"
 	client := New(testToken)

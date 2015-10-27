@@ -33,6 +33,24 @@ func (c *Client) RoomRaw(roomID int64) ([]byte, error) {
 	return c.connection.Get(fmt.Sprintf("rooms/%d", roomID), url.Values{}, c.config)
 }
 
+// PutRoomsRaw return PUT rooms/room_id response by []byte
+func (c *Client) PutRoomsRaw(roomID int64, description string, iconPreset string, name string) ([]byte, error) {
+	params := url.Values{}
+	if description != "" {
+		params.Add("description", description)
+	}
+
+	if iconPreset != "" {
+		params.Add("icon_preset", iconPreset)
+	}
+
+	if name != "" {
+		params.Add("name", name)
+	}
+
+	return c.connection.Put(fmt.Sprintf("rooms/%d", roomID), params, c.config)
+}
+
 // PostMessage post message to rooms/room_id/messages and response by int64
 func (c *Client) PostMessage(roomID int64, message string) (int64, error) {
 	var responseJSON = struct {
