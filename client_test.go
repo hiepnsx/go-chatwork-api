@@ -14,12 +14,6 @@ func TestNew(t *testing.T) {
 		So(client.config.url, ShouldEqual, chatworkURL)
 		So(client.config.token, ShouldEqual, testToken)
 	})
-
-	Convey("kddi", t, func() {
-		client := NewKddiChatwork(testToken)
-		So(client.config.url, ShouldEqual, kddiChatworkURL)
-		So(client.config.token, ShouldEqual, testToken)
-	})
 }
 
 type stubHTTP struct {
