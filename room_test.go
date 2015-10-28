@@ -193,13 +193,27 @@ func TestPutRooms(t *testing.T) {
 	client := New(testToken)
 
 	Convey("correct", t, func() {
+		correctJSON := `{"room_id":42}`
+		Convey("PutRooms", func() {
+			stub := &stubHTTP{}
+			stub.PutByte = []byte(correctJSON)
+			client.connection = stub
+
+			roomID, err := client.PutRooms(42, "desc", "meeting", "name")
+			So(err, ShouldBeNil)
+			So(stub.PutCount, ShouldEqual, 1)
+			So(stub.PutEndPoint, ShouldEqual, "rooms/42")
+
+			So(roomID, ShouldEqual, 42)
+		})
+
 		Convey("PutRoomsRaw", func() {
 			stub := &stubHTTP{}
-			stub.PutByte = make([]byte, 0)
+			stub.PutByte = []byte(correctJSON)
 			client.connection = stub
 
 			b, _ := client.PutRoomsRaw(42, "desc", "meeting", "name")
-			So(len(b), ShouldEqual, 0)
+			So(string(b), ShouldEqual, correctJSON)
 			So(stub.PutCount, ShouldEqual, 1)
 			So(stub.PutEndPoint, ShouldEqual, "rooms/42")
 
