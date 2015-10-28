@@ -33,6 +33,17 @@ func (c *Client) RoomRaw(roomID int64) ([]byte, error) {
 	return c.connection.Get(fmt.Sprintf("rooms/%d", roomID), url.Values{}, c.config)
 }
 
+// PutRooms return PUT rooms/room_id response by int64
+func (c *Client) PutRooms(roomID int64, description string, iconPreset string, name string) (int64, error) {
+	var responseJSON = struct {
+		RoomID int64 `json:"room_id"`
+	}{}
+
+	b, err := c.PutRoomsRaw(roomID, description, iconPreset, name)
+	err = setSturctFromJSON(b, &responseJSON, err)
+	return responseJSON.RoomID, err
+}
+
 // PutRoomsRaw return PUT rooms/room_id response by []byte
 func (c *Client) PutRoomsRaw(roomID int64, description string, iconPreset string, name string) ([]byte, error) {
 	params := url.Values{}
