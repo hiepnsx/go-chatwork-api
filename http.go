@@ -13,6 +13,7 @@ type apiConnection interface {
 	Get(endPoint string, params url.Values, config *config) ([]byte, error)
 	Post(endPoint string, params url.Values, config *config) ([]byte, error)
 	Put(endPoint string, params url.Values, config *config) ([]byte, error)
+	Delete(endPoint string, params url.Values, config *config) ([]byte, error)
 }
 
 // http interface
@@ -29,6 +30,10 @@ func (h *httpImp) Post(endPoint string, params url.Values, config *config) ([]by
 
 func (h *httpImp) Put(endPoint string, params url.Values, config *config) ([]byte, error) {
 	return h.connection("PUT", endPoint, params, config)
+}
+
+func (h *httpImp) Delete(endPoint string, params url.Values, config *config) ([]byte, error) {
+	return h.connection("DELETE", endPoint, params, config)
 }
 
 func (h *httpImp) connection(method string, endPoint string, params url.Values, config *config) ([]byte, error) {

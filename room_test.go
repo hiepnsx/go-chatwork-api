@@ -224,6 +224,27 @@ func TestPutRooms(t *testing.T) {
 	})
 }
 
+func TestDeleteRooms(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		correctJSON := ``
+		Convey("DeleteRooms", func() {
+			stub := &stubHTTP{}
+			stub.DeleteByte = []byte(correctJSON)
+			client.connection = stub
+
+			err := client.DeleteRooms(42, "leave")
+			So(err, ShouldBeNil)
+			So(stub.DeleteCount, ShouldEqual, 1)
+			So(stub.DeleteEndPoint, ShouldEqual, "rooms/42")
+
+			So(stub.DeleteParams.Get("action_type"), ShouldEqual, "leave")
+		})
+	})
+}
+
 func TestPostMessage(t *testing.T) {
 	testToken := "testToken"
 	client := New(testToken)

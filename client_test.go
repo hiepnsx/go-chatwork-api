@@ -31,6 +31,11 @@ type stubHTTP struct {
 	PutByte     []byte
 	PutEndPoint string
 	PutParams   url.Values
+
+	DeleteCount    int
+	DeleteByte     []byte
+	DeleteEndPoint string
+	DeleteParams   url.Values
 }
 
 func (h *stubHTTP) Get(endPoint string, params url.Values, config *config) ([]byte, error) {
@@ -52,4 +57,11 @@ func (h *stubHTTP) Put(endPoint string, params url.Values, config *config) ([]by
 	h.PutEndPoint = endPoint
 	h.PutParams = params
 	return h.PutByte, nil
+}
+
+func (h *stubHTTP) Delete(endPoint string, params url.Values, config *config) ([]byte, error) {
+	h.DeleteCount++
+	h.DeleteEndPoint = endPoint
+	h.DeleteParams = params
+	return h.DeleteByte, nil
 }

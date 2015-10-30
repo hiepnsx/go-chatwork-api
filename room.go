@@ -62,6 +62,17 @@ func (c *Client) PutRoomsRaw(roomID int64, description string, iconPreset string
 	return c.connection.Put(fmt.Sprintf("rooms/%d", roomID), params, c.config)
 }
 
+// DeleteRooms send DELETE rooms/room_id response, this api don't return response
+func (c *Client) DeleteRooms(roomID int64, actionType string) error {
+	params := url.Values{}
+	if actionType != "" {
+		params.Add("action_type", actionType)
+	}
+
+	_, err := c.connection.Delete(fmt.Sprintf("rooms/%d", roomID), params, c.config)
+	return err
+}
+
 // PostMessage post message to rooms/room_id/messages and response by int64
 func (c *Client) PostMessage(roomID int64, message string) (int64, error) {
 	var responseJSON = struct {
