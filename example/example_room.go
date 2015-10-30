@@ -16,6 +16,11 @@ func main() {
 
 	client := chatwork.New(token)
 
+	err := client.DeleteRooms(42, "delete")
+	if err == nil {
+		fmt.Println(err)
+	}
+
 	roomID, err := client.PutRooms(42, "dest", "idea", "test")
 	if err == nil {
 		fmt.Println(roomID)
