@@ -3,6 +3,7 @@ package gochatwork
 import (
 	. "github.com/smartystreets/goconvey/convey"
 	"net/url"
+	"strconv"
 	"testing"
 )
 
@@ -14,6 +15,24 @@ func TestNew(t *testing.T) {
 		So(client.config.url, ShouldEqual, chatworkURL)
 		So(client.config.token, ShouldEqual, testToken)
 	})
+}
+
+type TestValue struct {
+	Count int64
+}
+
+func (t *TestValue) getCount() int64 {
+	c := t.Count
+	t.Count++
+	return c
+}
+
+func (t *TestValue) GetInt64() int64 {
+	return t.getCount()
+}
+
+func (t *TestValue) GetString() string {
+	return "string_" + strconv.FormatInt(t.getCount(), 10)
 }
 
 type stubHTTP struct {
