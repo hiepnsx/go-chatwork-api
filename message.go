@@ -41,3 +41,17 @@ func (c *Client) GetMessageRaw(roomID int64, force bool) ([]byte, error) {
 
 	return c.connection.Get(fmt.Sprintf("rooms/%d/messages", roomID), params, c.config)
 }
+
+// GetSpecificMessage get message to rooms/room_id/messages/message_id and response by Message
+func (c *Client) GetSpecificMessage(roomID int64, messageID int64) (Message, error) {
+	var message Message
+
+	b, err := c.GetSpecificMessageRaw(roomID, messageID)
+	err = setSturctFromJSON(b, &message, err)
+	return message, err
+}
+
+// GetSpecificMessageRaw get message to rooms/room_id/messages/message_id and response by []byte
+func (c *Client) GetSpecificMessageRaw(roomID int64, messageID int64) ([]byte, error) {
+	return c.connection.Get(fmt.Sprintf("rooms/%d/messages/%d", roomID, messageID), url.Values{}, c.config)
+}

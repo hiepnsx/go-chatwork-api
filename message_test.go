@@ -98,3 +98,56 @@ func TestGetMessage(t *testing.T) {
 		})
 	})
 }
+
+func TestGetSpecificMessage(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		correctJSON := `
+{
+  "message_id": 1,
+  "account": {
+    "account_id": 2,
+    "name": "string_3",
+    "avatar_image_url": "https://string_4"
+  },
+  "body": "string_5",
+  "send_time": 6,
+  "update_time": 7
+}
+`
+		Convey("GetSpecificMessage", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = []byte(correctJSON)
+			client.connection = stub
+
+			message, err := client.GetSpecificMessage(42, 21)
+
+			So(err, ShouldBeNil)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "rooms/42/messages/21")
+
+			v := &TestValue{}
+			v.Count = 1
+			So(message.MessageID, ShouldEqual, v.GetInt64())
+			So(message.Account.AccountID, ShouldEqual, v.GetInt64())
+			So(message.Account.Name, ShouldEqual, v.GetString())
+			So(message.Account.AvatarImageURL, ShouldEqual, "https://"+v.GetString())
+			So(message.Body, ShouldEqual, v.GetString())
+			So(message.SendTime, ShouldEqual, v.GetInt64())
+			So(message.UpdateTime, ShouldEqual, v.GetInt64())
+		})
+
+		Convey("GetSpecificMessageRaw", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = []byte(correctJSON)
+			client.connection = stub
+
+			b, _ := client.GetSpecificMessageRaw(42, 21)
+			So(string(b), ShouldEqual, correctJSON)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "rooms/42/messages/21")
+		})
+	})
+}

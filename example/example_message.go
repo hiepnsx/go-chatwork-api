@@ -16,28 +16,24 @@ func main() {
 
 	client := chatwork.New(token)
 
-	err := client.DeleteRooms(42, "delete")
+	message, err := client.GetSpecificMessage(42, 21)
 	if err == nil {
+		fmt.Println(message)
+	} else {
 		fmt.Println(err)
 	}
+	return
 
-	roomID, err := client.PutRooms(42, "dest", "idea", "test")
+	messages, err := client.GetMessage(42, true)
 	if err == nil {
-		fmt.Println(roomID)
+		fmt.Println(messages)
 	} else {
 		fmt.Println(err)
 	}
 
-	rooms, err := client.Rooms()
+	messageID, err := client.PostMessage(42, "test")
 	if err == nil {
-		fmt.Println(rooms)
-	} else {
-		fmt.Println(err)
-	}
-
-	room, err := client.Room(42)
-	if err == nil {
-		fmt.Println(room)
+		fmt.Println(messageID)
 	} else {
 		fmt.Println(err)
 	}
