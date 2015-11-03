@@ -70,6 +70,7 @@ type Account struct {
 type Task struct {
 	TaskID            int64 `json:"task_id"`
 	Room              Room
+	Account           Account
 	AssignedByAccount Account `json:"assigned_by_account"`
 	MessageID         int64   `json:"message_id"`
 	Body              string

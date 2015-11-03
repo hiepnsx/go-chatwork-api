@@ -43,8 +43,8 @@ func main() {
   - [x] PUT /rooms/{room_id}/members
   - [x] GET /rooms/{room_id}/messages
   - [x] POST /rooms/{room_id}/messages
-  - [] GET /rooms/{room_id}/messages/{message_id}
-  - [] GET /rooms/{room_id}/tasks
+  - [x] GET /rooms/{room_id}/messages/{message_id}
+  - [x] GET /rooms/{room_id}/tasks
   - [] POST /rooms/{room_id}/tasks
   - [] GET /rooms/{room_id}/tasks/{task_id}
   - [] GET /rooms/{room_id}/files
