@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	chatwork "github.com/ota42y/go-chatwork-api"
 )
@@ -16,11 +17,17 @@ func main() {
 
 	client := chatwork.New(token)
 
+	taskIDs, err := client.PostTasks(42, "new task", time.Now(), []int64{1})
+	if err == nil {
+		fmt.Println(taskIDs)
+	} else {
+		fmt.Println(err)
+	}
+
 	tasks, err := client.GetTasks(42, 0, 0, "done")
 	if err == nil {
 		fmt.Println(tasks)
 	} else {
 		fmt.Println(err)
 	}
-
 }

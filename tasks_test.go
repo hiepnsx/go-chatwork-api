@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
+	"time"
 )
 
 func CheckAccount(v *TestValue, a Account) {
@@ -77,6 +78,46 @@ func TestGetTasks(t *testing.T) {
 			So(stub.GetParams.Get("account_id"), ShouldEqual, "1")
 			So(stub.GetParams.Get("assigned_by_account_id"), ShouldEqual, "2")
 			So(stub.GetParams.Get("status"), ShouldEqual, "done")
+		})
+	})
+}
+
+func TestPostTasks(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		correctJSON := `{"task_ids":[1, 2]}`
+		Convey("GetTasks", func() {
+			stub := &stubHTTP{}
+			stub.PostByte = []byte(correctJSON)
+			client.connection = stub
+
+			now := time.Unix(100, 0)
+			taskIds, err := client.PostTasks(42, "new task", now, []int64{1, 2, 3})
+			So(err, ShouldBeNil)
+			So(stub.PostCount, ShouldEqual, 1)
+			So(stub.PostEndPoint, ShouldEqual, "rooms/42/tasks")
+			So(stub.PostParams.Get("body"), ShouldEqual, "new task")
+			So(stub.PostParams.Get("limit"), ShouldEqual, "100")
+			So(stub.PostParams.Get("to_ids"), ShouldEqual, "1,2,3")
+
+			So(taskIds, ShouldResemble, []int64{1, 2})
+		})
+
+		Convey("GetTasksRaw", func() {
+			stub := &stubHTTP{}
+			stub.PostByte = []byte(correctJSON)
+			client.connection = stub
+
+			now := time.Unix(100, 0)
+			b, _ := client.PostTasksRaw(42, "new task", now, []int64{1, 2, 3})
+			So(string(b), ShouldEqual, correctJSON)
+			So(stub.PostCount, ShouldEqual, 1)
+			So(stub.PostEndPoint, ShouldEqual, "rooms/42/tasks")
+			So(stub.PostParams.Get("body"), ShouldEqual, "new task")
+			So(stub.PostParams.Get("limit"), ShouldEqual, "100")
+			So(stub.PostParams.Get("to_ids"), ShouldEqual, "1,2,3")
 		})
 	})
 }
