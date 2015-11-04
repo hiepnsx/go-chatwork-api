@@ -3,6 +3,8 @@ package gochatwork
 import (
 	"fmt"
 	"net/url"
+	"strings"
+	"time"
 )
 
 // GetTasks get tasks to rooms/room_id/tasks and response by []tasks
@@ -30,4 +32,36 @@ func (c *Client) GetTasksRaw(roomID int64, accountID int64, assignedByAccountID 
 	}
 
 	return c.connection.Get(fmt.Sprintf("rooms/%d/tasks", roomID), params, c.config)
+}
+
+// PostTasks post tasks to rooms/room_id/tasks and response by []int64
+func (c *Client) PostTasks(roomID int64, body string, limit time.Time, toIDs []int64) ([]int64, error) {
+	var responseJSON = struct {
+		TaskIDs []int64 `json:"task_ids"`
+	}{}
+
+	b, err := c.PostTasksRaw(roomID, body, limit, toIDs)
+	err = setSturctFromJSON(b, &responseJSON, err)
+	return responseJSON.TaskIDs, err
+}
+
+// PostTasksRaw post tasks to rooms/room_id/tasks and response by []byte
+func (c *Client) PostTasksRaw(roomID int64, body string, limit time.Time, toIDs []int64) ([]byte, error) {
+	params := url.Values{}
+	if body != "" {
+		params.Add("body", body)
+	}
+
+	if !limit.IsZero() {
+		params.Add("limit", fmt.Sprintf("%d", limit.Unix()))
+	}
+
+	if len(toIDs) != 0 {
+		str := fmt.Sprintf("%v", toIDs)
+		str = strings.Trim(str, "[]")
+		str = strings.Replace(str, " ", ",", -1)
+		params.Add("to_ids", str)
+	}
+
+	return c.connection.Post(fmt.Sprintf("rooms/%d/tasks", roomID), params, c.config)
 }
