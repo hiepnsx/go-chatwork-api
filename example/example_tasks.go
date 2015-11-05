@@ -17,6 +17,13 @@ func main() {
 
 	client := chatwork.New(token)
 
+	task, err := client.GetSpecificTask(42, 21)
+	if err == nil {
+		fmt.Println(task)
+	} else {
+		fmt.Println(err)
+	}
+
 	taskIDs, err := client.PostTasks(42, "new task", time.Now(), []int64{1})
 	if err == nil {
 		fmt.Println(taskIDs)

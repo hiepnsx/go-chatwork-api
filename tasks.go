@@ -65,3 +65,17 @@ func (c *Client) PostTasksRaw(roomID int64, body string, limit time.Time, toIDs 
 
 	return c.connection.Post(fmt.Sprintf("rooms/%d/tasks", roomID), params, c.config)
 }
+
+// GetSpecificTask get tasks to rooms/room_id/tasks/task_id and response by Task
+func (c *Client) GetSpecificTask(roomID int64, taskID int64) (Task, error) {
+	var task Task
+
+	b, err := c.GetSpecificTaskRaw(roomID, taskID)
+	err = setSturctFromJSON(b, &task, err)
+	return task, err
+}
+
+// GetSpecificTaskRaw get tasks to rooms/room_id/tasks/task_id and response by []byte
+func (c *Client) GetSpecificTaskRaw(roomID int64, taskID int64) ([]byte, error) {
+	return c.connection.Get(fmt.Sprintf("rooms/%d/tasks/%d", roomID, taskID), url.Values{}, c.config)
+}
