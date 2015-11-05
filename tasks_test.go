@@ -121,3 +121,54 @@ func TestPostTasks(t *testing.T) {
 		})
 	})
 }
+
+func TestGetSpecificTask(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		correctJSON := `
+{
+  "status": "open",
+  "limit_time": 10,
+  "body": "string_9",
+  "message_id": 8,
+  "assigned_by_account": {
+    "avatar_image_url": "string_7",
+    "name": "string_6",
+    "account_id": 5
+  },
+  "account": {
+    "avatar_image_url": "string_4",
+    "name": "string_3",
+    "account_id": 2
+  },
+  "task_id": 1
+}`
+		Convey("GetTasks", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = []byte(correctJSON)
+			client.connection = stub
+
+			task, err := client.GetSpecificTask(42, 21)
+			So(err, ShouldBeNil)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "rooms/42/tasks/21")
+
+			v := &TestValue{}
+			v.Count = 1
+			CheckTask(v, task)
+		})
+
+		Convey("GetSpecificTaskRaw", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = []byte(correctJSON)
+			client.connection = stub
+
+			b, _ := client.GetSpecificTaskRaw(42, 21)
+			So(string(b), ShouldEqual, correctJSON)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "rooms/42/tasks/21")
+		})
+	})
+}
