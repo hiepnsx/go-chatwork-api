@@ -32,10 +32,10 @@ func main() {
 # Feature
 - [x] /me
 - [x] /my
-- [] /contacts
-- [] /rooms
+- [ ] /contacts
+- [ ] /rooms
   - [x] GET /rooms
-  - [] POST /rooms
+  - [ ] POST /rooms
   - [x] GET /rooms/{room_id}
   - [x] PUT /rooms/{room_id}
   - [x] DELETE /rooms/{room_id}
@@ -45,8 +45,8 @@ func main() {
   - [x] POST /rooms/{room_id}/messages
   - [x] GET /rooms/{room_id}/messages/{message_id}
   - [x] GET /rooms/{room_id}/tasks
-  - [] POST /rooms/{room_id}/tasks
-  - [] GET /rooms/{room_id}/tasks/{task_id}
-  - [] GET /rooms/{room_id}/files
-  - [] GET /rooms/{room_id}/files{file_id}
+  - [x] POST /rooms/{room_id}/tasks
+  - [x] GET /rooms/{room_id}/tasks/{task_id}
+  - [x] GET /rooms/{room_id}/files
+  - [ ] GET /rooms/{room_id}/files{file_id}
   
