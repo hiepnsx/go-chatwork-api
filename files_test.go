@@ -67,3 +67,54 @@ func TestGetFiles(t *testing.T) {
 		})
 	})
 }
+
+func TestGetSpecificFilesRaw(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		correctJSON := `
+{
+  "file_id": 1,
+  "account": {
+    "account_id": 2,
+    "name": "string_3",
+    "avatar_image_url": "string_4"
+  },
+  "message_id": 5,
+  "filename": "string_6",
+  "filesize": 7,
+  "upload_time": 8,
+  "download_url": "string_9"
+}
+`
+		Convey("GetSpecificFiles", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = []byte(correctJSON)
+			client.connection = stub
+
+			file, err := client.GetSpecificFiles(42, 21, true)
+			So(err, ShouldBeNil)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "rooms/42/files/21")
+			So(stub.GetParams.Get("create_download_url"), ShouldEqual, "1")
+
+			v := &TestValue{}
+			v.Count = 1
+			CheckFile(v, file)
+			So(file.DownloadURL, ShouldEqual, v.GetString())
+		})
+
+		Convey("GetSpecificFilesRaw", func() {
+			stub := &stubHTTP{}
+			stub.GetByte = []byte(correctJSON)
+			client.connection = stub
+
+			b, _ := client.GetSpecificFilesRaw(42, 21, true)
+			So(string(b), ShouldEqual, correctJSON)
+			So(stub.GetCount, ShouldEqual, 1)
+			So(stub.GetEndPoint, ShouldEqual, "rooms/42/files/21")
+			So(stub.GetParams.Get("create_download_url"), ShouldEqual, "1")
+		})
+	})
+}

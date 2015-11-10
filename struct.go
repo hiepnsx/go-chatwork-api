@@ -89,12 +89,13 @@ type Message struct {
 
 // File is file struct
 type File struct {
-	FileID     int64 `json:"file_id"`
-	Account    Account
-	MessageID  int64 `json:"message_id"`
-	Filename   string
-	Filesize   int64
-	UploadTime int64 `json:"upload_time"`
+	FileID      int64 `json:"file_id"`
+	Account     Account
+	MessageID   int64 `json:"message_id"`
+	Filename    string
+	Filesize    int64
+	UploadTime  int64  `json:"upload_time"`
+	DownloadURL string `json:"download_url"`
 }
 
 func setSturctFromJSON(b []byte, v interface{}, err error) error {

@@ -15,6 +15,16 @@ func main() {
 	}
 
 	client := chatwork.New(token)
+
+	file, err := client.GetSpecificFiles(42, 21, true)
+	if err == nil {
+		fmt.Println(file)
+	} else {
+		fmt.Println(err)
+	}
+
+	return
+
 	files, err := client.GetFiles(42, 0)
 	if err == nil {
 		fmt.Println(files)
