@@ -22,3 +22,21 @@ func (c *Client) GetFilesRaw(roomID int64, accountID int64) ([]byte, error) {
 	}
 	return c.connection.Get(fmt.Sprintf("rooms/%d/files", roomID), params, c.config)
 }
+
+// GetSpecificFiles return /rooms/{room_id}/files/file_id response by File
+func (c *Client) GetSpecificFiles(roomID int64, fileID int64, createDownloadURL bool) (File, error) {
+	var file File
+
+	b, err := c.GetSpecificFilesRaw(roomID, fileID, createDownloadURL)
+	err = setSturctFromJSON(b, &file, err)
+	return file, err
+}
+
+// GetSpecificFilesRaw return /rooms/{room_id}/files/file_id response by []byte
+func (c *Client) GetSpecificFilesRaw(roomID int64, fileID int64, createDownloadURL bool) ([]byte, error) {
+	params := url.Values{}
+	if createDownloadURL {
+		params.Add("create_download_url", "1")
+	}
+	return c.connection.Get(fmt.Sprintf("rooms/%d/files/%d", roomID, fileID), params, c.config)
+}
