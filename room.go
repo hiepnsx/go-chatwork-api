@@ -3,6 +3,7 @@ package gochatwork
 import (
 	"fmt"
 	"net/url"
+	"strings"
 )
 
 // GetRooms return rooms response by []Room
@@ -17,6 +18,56 @@ func (c *Client) GetRooms() ([]Room, error) {
 // GetRoomsRaw return rooms response by []byte
 func (c *Client) GetRoomsRaw() ([]byte, error) {
 	return c.connection.Get("rooms", url.Values{}, c.config)
+}
+
+// PostRooms return POST rooms response by int64
+func (c *Client) PostRooms(description string, iconPreset string, membersAdminIDs []int64, membersMemberIDs []int64, membersReadonlyIDs []int64, name string) (int64, error) {
+	var responseJSON = struct {
+		RoomID int64 `json:"room_id"`
+	}{}
+
+	b, err := c.PostRoomsRaw(description, iconPreset, membersAdminIDs, membersMemberIDs, membersReadonlyIDs, name)
+	err = setSturctFromJSON(b, &responseJSON, err)
+	return responseJSON.RoomID, err
+}
+
+// PostRoomsRaw return POST rooms response by []byte
+func (c *Client) PostRoomsRaw(description string, iconPreset string, membersAdminIDs []int64, membersMemberIDs []int64, membersReadonlyIDs []int64, name string) ([]byte, error) {
+	params := url.Values{}
+	if description != "" {
+		params.Add("description", description)
+	}
+
+	if iconPreset != "" {
+		params.Add("icon_preset", iconPreset)
+	}
+
+	if name != "" {
+		params.Add("name", name)
+	}
+
+	if len(membersAdminIDs) != 0 {
+		str := fmt.Sprintf("%v", membersAdminIDs)
+		str = strings.Trim(str, "[]")
+		str = strings.Replace(str, " ", ",", -1)
+		params.Add("members_admin_ids", str)
+	}
+
+	if len(membersMemberIDs) != 0 {
+		str := fmt.Sprintf("%v", membersMemberIDs)
+		str = strings.Trim(str, "[]")
+		str = strings.Replace(str, " ", ",", -1)
+		params.Add("members_member_ids", str)
+	}
+
+	if len(membersReadonlyIDs) != 0 {
+		str := fmt.Sprintf("%v", membersReadonlyIDs)
+		str = strings.Trim(str, "[]")
+		str = strings.Replace(str, " ", ",", -1)
+		params.Add("members_readonly_ids", str)
+	}
+
+	return c.connection.Post("rooms", params, c.config)
 }
 
 // GetSpecificRooms return rooms/room_id response by Room

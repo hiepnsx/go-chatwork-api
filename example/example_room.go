@@ -16,7 +16,14 @@ func main() {
 
 	client := chatwork.New(token)
 
-	err := client.DeleteRooms(42, "delete")
+	newRoomID, err := client.PostRooms("description", "project", []int64{}, []int64{}, []int64{}, "name")
+	if err == nil {
+		fmt.Println(newRoomID)
+	} else {
+		fmt.Println(err)
+	}
+
+	err = client.DeleteRooms(42, "delete")
 	if err == nil {
 		fmt.Println(err)
 	}
@@ -28,14 +35,14 @@ func main() {
 		fmt.Println(err)
 	}
 
-	rooms, err := client.Rooms()
+	rooms, err := client.GetRooms()
 	if err == nil {
 		fmt.Println(rooms)
 	} else {
 		fmt.Println(err)
 	}
 
-	room, err := client.Room(42)
+	room, err := client.GetSpecificRooms(42)
 	if err == nil {
 		fmt.Println(room)
 	} else {
