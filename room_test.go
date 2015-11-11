@@ -6,43 +6,58 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestRooms(t *testing.T) {
+func CheckRoom(v *TestValue, room Room) {
+	So(room.RoomID, ShouldEqual, v.GetInt64())
+	So(room.Name, ShouldEqual, v.GetString())
+	So(room.Type, ShouldEqual, v.GetString())
+	So(room.Role, ShouldEqual, v.GetString())
+	So(room.UnreadNum, ShouldEqual, v.GetInt64())
+	So(room.MentionNum, ShouldEqual, v.GetInt64())
+	So(room.MytaskNum, ShouldEqual, v.GetInt64())
+	So(room.MessageNum, ShouldEqual, v.GetInt64())
+	So(room.FileNum, ShouldEqual, v.GetInt64())
+	So(room.TaskNum, ShouldEqual, v.GetInt64())
+	So(room.IconPath, ShouldEqual, v.GetString())
+	So(room.LastUpdateTime, ShouldEqual, v.GetInt64())
+}
+
+func TestGetRooms(t *testing.T) {
 	testToken := "testToken"
 	client := New(testToken)
 
 	Convey("correct", t, func() {
-		Convey("Rooms", func() {
+		Convey("GetRooms", func() {
 			correctJSON := `
 [
   {
     "room_id":1,
     "name":"string_2",
-    "type":"my",
-    "role":"member",
+    "type":"string_3",
+    "role":"string_4",
     "sticky":true,
-    "unread_num":3,
-    "mention_num":4,
-    "mytask_num":5,
-    "message_num":6,
-    "file_num":7,
-    "task_num":8,
-    "icon_path":"string_9",
-    "last_update_time":10
+    "unread_num":5,
+    "mention_num":6,
+    "mytask_num":7,
+    "message_num":8,
+    "file_num":9,
+    "task_num":10,
+    "icon_path":"string_11",
+    "last_update_time":12
   },
   {
-    "room_id":11,
-    "name":"string_12",
-    "type":"group",
-    "role":"admin",
+    "room_id":13,
+    "name":"string_14",
+    "type":"string_15",
+    "role":"string_16",
     "sticky":false,
-    "unread_num":13,
-    "mention_num":14,
-    "mytask_num":15,
-    "message_num":16,
-    "file_num":17,
-    "task_num":18,
-    "icon_path":"string_19",
-    "last_update_time":20
+    "unread_num":17,
+    "mention_num":18,
+    "mytask_num":19,
+    "message_num":20,
+    "file_num":21,
+    "task_num":22,
+    "icon_path":"string_23",
+    "last_update_time":24
   }
 ]
 `
@@ -61,37 +76,15 @@ func TestRooms(t *testing.T) {
 			v := &TestValue{}
 			v.Count = 1
 			room := rooms[0]
-			So(room.RoomID, ShouldEqual, v.GetInt64())
-			So(room.Name, ShouldEqual, v.GetString())
-			So(room.Type, ShouldEqual, "my")
-			So(room.Role, ShouldEqual, "member")
+			CheckRoom(v, room)
 			So(room.Sticky, ShouldBeTrue)
-			So(room.UnreadNum, ShouldEqual, v.GetInt64())
-			So(room.MentionNum, ShouldEqual, v.GetInt64())
-			So(room.MytaskNum, ShouldEqual, v.GetInt64())
-			So(room.MessageNum, ShouldEqual, v.GetInt64())
-			So(room.FileNum, ShouldEqual, v.GetInt64())
-			So(room.TaskNum, ShouldEqual, v.GetInt64())
-			So(room.IconPath, ShouldEqual, v.GetString())
-			So(room.LastUpdateTime, ShouldEqual, v.GetInt64())
 
 			room = rooms[1]
-			So(room.RoomID, ShouldEqual, v.GetInt64())
-			So(room.Name, ShouldEqual, v.GetString())
-			So(room.Type, ShouldEqual, "group")
-			So(room.Role, ShouldEqual, "admin")
+			CheckRoom(v, room)
 			So(room.Sticky, ShouldBeFalse)
-			So(room.UnreadNum, ShouldEqual, v.GetInt64())
-			So(room.MentionNum, ShouldEqual, v.GetInt64())
-			So(room.MytaskNum, ShouldEqual, v.GetInt64())
-			So(room.MessageNum, ShouldEqual, v.GetInt64())
-			So(room.FileNum, ShouldEqual, v.GetInt64())
-			So(room.TaskNum, ShouldEqual, v.GetInt64())
-			So(room.IconPath, ShouldEqual, v.GetString())
-			So(room.LastUpdateTime, ShouldEqual, v.GetInt64())
 		})
 
-		Convey("RoomsRaw", func() {
+		Convey("GetRoomsRaw", func() {
 			stub := &stubHTTP{}
 			stub.GetByte = make([]byte, 0)
 			client.connection = stub
@@ -104,27 +97,27 @@ func TestRooms(t *testing.T) {
 	})
 }
 
-func TestRoom(t *testing.T) {
+func TestGetSpecificRooms(t *testing.T) {
 	testToken := "testToken"
 	client := New(testToken)
 
 	Convey("correct", t, func() {
-		Convey("Rooms", func() {
+		Convey("GetSpecificRooms", func() {
 			correctJSON := `
 {
   "room_id":1,
   "name":"string_2",
-  "type":"direct",
-  "role":"string_3",
+  "type":"string_3",
+  "role":"string_4",
   "sticky":true,
-  "unread_num":4,
-  "mention_num":5,
-  "mytask_num":6,
-  "message_num":7,
-  "file_num":8,
-  "task_num":9,
-  "icon_path":"string_10",
-  "description":"string_11",
+  "unread_num":5,
+  "mention_num":6,
+  "mytask_num":7,
+  "message_num":8,
+  "file_num":9,
+  "task_num":10,
+  "icon_path":"string_11",
+  "description":"description",
   "last_update_time":12
 }
 `
@@ -140,23 +133,12 @@ func TestRoom(t *testing.T) {
 
 			v := &TestValue{}
 			v.Count = 1
-			So(room.RoomID, ShouldEqual, v.GetInt64())
-			So(room.Name, ShouldEqual, v.GetString())
-			So(room.Type, ShouldEqual, "direct")
-			So(room.Role, ShouldEqual, v.GetString())
+			CheckRoom(v, room)
+			So(room.Description, ShouldEqual, "description")
 			So(room.Sticky, ShouldBeTrue)
-			So(room.UnreadNum, ShouldEqual, v.GetInt64())
-			So(room.MentionNum, ShouldEqual, v.GetInt64())
-			So(room.MytaskNum, ShouldEqual, v.GetInt64())
-			So(room.MessageNum, ShouldEqual, v.GetInt64())
-			So(room.FileNum, ShouldEqual, v.GetInt64())
-			So(room.TaskNum, ShouldEqual, v.GetInt64())
-			So(room.IconPath, ShouldEqual, v.GetString())
-			So(room.Description, ShouldEqual, v.GetString())
-			So(room.LastUpdateTime, ShouldEqual, v.GetInt64())
 		})
 
-		Convey("RoomRaw", func() {
+		Convey("GetSpecificRoomsRaw", func() {
 			stub := &stubHTTP{}
 			stub.GetByte = make([]byte, 0)
 			client.connection = stub
@@ -165,6 +147,50 @@ func TestRoom(t *testing.T) {
 			So(len(b), ShouldEqual, 0)
 			So(stub.GetCount, ShouldEqual, 1)
 			So(stub.GetEndPoint, ShouldEqual, "rooms/42")
+		})
+	})
+}
+
+func TestPostRoomsRaw(t *testing.T) {
+	testToken := "testToken"
+	client := New(testToken)
+
+	Convey("correct", t, func() {
+		correctJSON := `{"room_id":42}`
+		Convey("PostMessage", func() {
+			stub := &stubHTTP{}
+			stub.PostByte = []byte(correctJSON)
+			client.connection = stub
+
+			roomID, err := client.PostRooms("description", "project", []int64{1, 2}, []int64{3, 4}, []int64{5, 6}, "name")
+			So(err, ShouldBeNil)
+			So(stub.PostCount, ShouldEqual, 1)
+			So(stub.PostEndPoint, ShouldEqual, "rooms")
+			So(stub.PostParams.Get("description"), ShouldEqual, "description")
+			So(stub.PostParams.Get("icon_preset"), ShouldEqual, "project")
+			So(stub.PostParams.Get("members_admin_ids"), ShouldEqual, "1,2")
+			So(stub.PostParams.Get("members_member_ids"), ShouldEqual, "3,4")
+			So(stub.PostParams.Get("members_readonly_ids"), ShouldEqual, "5,6")
+			So(stub.PostParams.Get("name"), ShouldEqual, "name")
+
+			So(roomID, ShouldEqual, 42)
+		})
+
+		Convey("PostRoomsRaw", func() {
+			stub := &stubHTTP{}
+			stub.PostByte = []byte(correctJSON)
+			client.connection = stub
+
+			b, _ := client.PostRoomsRaw("description", "project", []int64{1, 2}, []int64{3, 4}, []int64{5, 6}, "name")
+			So(string(b), ShouldEqual, correctJSON)
+			So(stub.PostCount, ShouldEqual, 1)
+			So(stub.PostEndPoint, ShouldEqual, "rooms")
+			So(stub.PostParams.Get("description"), ShouldEqual, "description")
+			So(stub.PostParams.Get("icon_preset"), ShouldEqual, "project")
+			So(stub.PostParams.Get("members_admin_ids"), ShouldEqual, "1,2")
+			So(stub.PostParams.Get("members_member_ids"), ShouldEqual, "3,4")
+			So(stub.PostParams.Get("members_readonly_ids"), ShouldEqual, "5,6")
+			So(stub.PostParams.Get("name"), ShouldEqual, "name")
 		})
 	})
 }

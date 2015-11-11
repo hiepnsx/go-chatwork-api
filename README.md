@@ -19,11 +19,14 @@ import (
 
 func main() {
 	chatwork := chatwork.New("api-key")
-	rooms, err := chatwork.Rooms()
+	
+	rooms, err := client.GetRooms()
 	if err == nil {
 		for _, room := range rooms {
 			fmt.Println(room.RoomId, room.Name, room.UnreadNum)
 		}
+	} else {
+		fmt.Println(err)
 	}
 }
 ```
@@ -33,20 +36,5 @@ func main() {
 - [x] /me
 - [x] /my
 - [ ] /contacts
-- [ ] /rooms
-  - [x] GET /rooms
-  - [ ] POST /rooms
-  - [x] GET /rooms/{room_id}
-  - [x] PUT /rooms/{room_id}
-  - [x] DELETE /rooms/{room_id}
-  - [x] GET /rooms/{room_id}/members
-  - [x] PUT /rooms/{room_id}/members
-  - [x] GET /rooms/{room_id}/messages
-  - [x] POST /rooms/{room_id}/messages
-  - [x] GET /rooms/{room_id}/messages/{message_id}
-  - [x] GET /rooms/{room_id}/tasks
-  - [x] POST /rooms/{room_id}/tasks
-  - [x] GET /rooms/{room_id}/tasks/{task_id}
-  - [x] GET /rooms/{room_id}/files
-  - [ ] GET /rooms/{room_id}/files{file_id}
-  
+- [x] /rooms
+
