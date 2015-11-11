@@ -50,7 +50,7 @@ func TestRooms(t *testing.T) {
 			stub.GetByte = []byte(correctJSON)
 			client.connection = stub
 
-			rooms, err := client.Rooms()
+			rooms, err := client.GetRooms()
 
 			So(stub.GetCount, ShouldEqual, 1)
 			So(stub.GetEndPoint, ShouldEqual, "rooms")
@@ -96,7 +96,7 @@ func TestRooms(t *testing.T) {
 			stub.GetByte = make([]byte, 0)
 			client.connection = stub
 
-			b, _ := client.RoomsRaw()
+			b, _ := client.GetRoomsRaw()
 			So(len(b), ShouldEqual, 0)
 			So(stub.GetCount, ShouldEqual, 1)
 			So(stub.GetEndPoint, ShouldEqual, "rooms")
@@ -132,7 +132,7 @@ func TestRoom(t *testing.T) {
 			stub.GetByte = []byte(correctJSON)
 			client.connection = stub
 
-			room, err := client.Room(41)
+			room, err := client.GetSpecificRooms(41)
 			So(err, ShouldBeNil)
 
 			So(stub.GetCount, ShouldEqual, 1)
@@ -161,7 +161,7 @@ func TestRoom(t *testing.T) {
 			stub.GetByte = make([]byte, 0)
 			client.connection = stub
 
-			b, _ := client.RoomRaw(42)
+			b, _ := client.GetSpecificRoomsRaw(42)
 			So(len(b), ShouldEqual, 0)
 			So(stub.GetCount, ShouldEqual, 1)
 			So(stub.GetEndPoint, ShouldEqual, "rooms/42")

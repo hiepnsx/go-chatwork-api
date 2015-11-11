@@ -5,31 +5,31 @@ import (
 	"net/url"
 )
 
-// Rooms return rooms response by []Room
-func (c *Client) Rooms() ([]Room, error) {
+// GetRooms return rooms response by []Room
+func (c *Client) GetRooms() ([]Room, error) {
 	var rooms []Room
 
-	b, err := c.RoomsRaw()
+	b, err := c.GetRoomsRaw()
 	err = setSturctFromJSON(b, &rooms, err)
 	return rooms, err
 }
 
-// RoomsRaw return rooms response by []byte
-func (c *Client) RoomsRaw() ([]byte, error) {
+// GetRoomsRaw return rooms response by []byte
+func (c *Client) GetRoomsRaw() ([]byte, error) {
 	return c.connection.Get("rooms", url.Values{}, c.config)
 }
 
-// Room return rooms/room_id response by Room
-func (c *Client) Room(roomID int64) (Room, error) {
+// GetSpecificRooms return rooms/room_id response by Room
+func (c *Client) GetSpecificRooms(roomID int64) (Room, error) {
 	var room Room
 
-	b, err := c.RoomRaw(roomID)
+	b, err := c.GetSpecificRoomsRaw(roomID)
 	err = setSturctFromJSON(b, &room, err)
 	return room, err
 }
 
-// RoomRaw return rooms/room_id response by []byte
-func (c *Client) RoomRaw(roomID int64) ([]byte, error) {
+// GetSpecificRoomsRaw return rooms/room_id response by []byte
+func (c *Client) GetSpecificRoomsRaw(roomID int64) ([]byte, error) {
 	return c.connection.Get(fmt.Sprintf("rooms/%d", roomID), url.Values{}, c.config)
 }
 
