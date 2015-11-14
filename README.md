@@ -33,8 +33,10 @@ func main() {
 
 
 # Feature
+Full api support. (in 2015/11)
+
 - [x] /me
 - [x] /my
-- [ ] /contacts
+- [x] /contacts
 - [x] /rooms
 
