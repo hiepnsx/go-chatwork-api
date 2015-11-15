@@ -12,7 +12,7 @@ func (c *Client) PostMessage(roomID int64, message string) (int64, error) {
 	}{}
 
 	b, err := c.PostMessageRaw(roomID, message)
-	err = setSturctFromJSON(b, &responseJSON, err)
+	err = setStructFromJSON(b, &responseJSON, err)
 	return responseJSON.MessageID, err
 }
 
@@ -28,7 +28,7 @@ func (c *Client) GetMessage(roomID int64, force bool) ([]Message, error) {
 	var messages []Message
 
 	b, err := c.GetMessageRaw(roomID, force)
-	err = setSturctFromJSON(b, &messages, err)
+	err = setStructFromJSON(b, &messages, err)
 	return messages, err
 }
 
@@ -47,7 +47,7 @@ func (c *Client) GetSpecificMessage(roomID int64, messageID int64) (Message, err
 	var message Message
 
 	b, err := c.GetSpecificMessageRaw(roomID, messageID)
-	err = setSturctFromJSON(b, &message, err)
+	err = setStructFromJSON(b, &message, err)
 	return message, err
 }
 

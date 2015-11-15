@@ -22,7 +22,6 @@ func main() {
 	} else {
 		fmt.Println(err)
 	}
-	return
 
 	messages, err := client.GetMessage(42, true)
 	if err == nil {

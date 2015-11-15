@@ -9,7 +9,7 @@ func (c *Client) MyStatus() (Status, error) {
 	var status Status
 
 	b, err := c.MyStatusRaw()
-	err = setSturctFromJSON(b, &status, err)
+	err = setStructFromJSON(b, &status, err)
 	return status, err
 }
 
@@ -23,7 +23,7 @@ func (c *Client) MyTasks(params url.Values) ([]Task, error) {
 	var tasks []Task
 
 	b, err := c.MyTasksRaw(params)
-	err = setSturctFromJSON(b, &tasks, err)
+	err = setStructFromJSON(b, &tasks, err)
 	return tasks, err
 }
 

@@ -11,7 +11,7 @@ func (c *Client) GetRooms() ([]Room, error) {
 	var rooms []Room
 
 	b, err := c.GetRoomsRaw()
-	err = setSturctFromJSON(b, &rooms, err)
+	err = setStructFromJSON(b, &rooms, err)
 	return rooms, err
 }
 
@@ -27,7 +27,7 @@ func (c *Client) PostRooms(description string, iconPreset string, membersAdminID
 	}{}
 
 	b, err := c.PostRoomsRaw(description, iconPreset, membersAdminIDs, membersMemberIDs, membersReadonlyIDs, name)
-	err = setSturctFromJSON(b, &responseJSON, err)
+	err = setStructFromJSON(b, &responseJSON, err)
 	return responseJSON.RoomID, err
 }
 
@@ -75,7 +75,7 @@ func (c *Client) GetSpecificRooms(roomID int64) (Room, error) {
 	var room Room
 
 	b, err := c.GetSpecificRoomsRaw(roomID)
-	err = setSturctFromJSON(b, &room, err)
+	err = setStructFromJSON(b, &room, err)
 	return room, err
 }
 
@@ -91,7 +91,7 @@ func (c *Client) PutRooms(roomID int64, description string, iconPreset string, n
 	}{}
 
 	b, err := c.PutRoomsRaw(roomID, description, iconPreset, name)
-	err = setSturctFromJSON(b, &responseJSON, err)
+	err = setStructFromJSON(b, &responseJSON, err)
 	return responseJSON.RoomID, err
 }
 

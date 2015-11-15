@@ -9,7 +9,7 @@ func (c *Client) Me() (Me, error) {
 	var me Me
 
 	b, err := c.MeRaw()
-	err = setSturctFromJSON(b, &me, err)
+	err = setStructFromJSON(b, &me, err)
 	return me, err
 }
 

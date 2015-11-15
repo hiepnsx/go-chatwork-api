@@ -12,7 +12,7 @@ func (c *Client) GetTasks(roomID int64, accountID int64, assignedByAccountID int
 	var tasks []Task
 
 	b, err := c.GetTasksRaw(roomID, accountID, assignedByAccountID, status)
-	err = setSturctFromJSON(b, &tasks, err)
+	err = setStructFromJSON(b, &tasks, err)
 	return tasks, err
 }
 
@@ -41,7 +41,7 @@ func (c *Client) PostTasks(roomID int64, body string, limit time.Time, toIDs []i
 	}{}
 
 	b, err := c.PostTasksRaw(roomID, body, limit, toIDs)
-	err = setSturctFromJSON(b, &responseJSON, err)
+	err = setStructFromJSON(b, &responseJSON, err)
 	return responseJSON.TaskIDs, err
 }
 
@@ -71,7 +71,7 @@ func (c *Client) GetSpecificTask(roomID int64, taskID int64) (Task, error) {
 	var task Task
 
 	b, err := c.GetSpecificTaskRaw(roomID, taskID)
-	err = setSturctFromJSON(b, &task, err)
+	err = setStructFromJSON(b, &task, err)
 	return task, err
 }
 

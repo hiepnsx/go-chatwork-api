@@ -23,8 +23,6 @@ func main() {
 		fmt.Println(err)
 	}
 
-	return
-
 	files, err := client.GetFiles(42, 0)
 	if err == nil {
 		fmt.Println(files)
