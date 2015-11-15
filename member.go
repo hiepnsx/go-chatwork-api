@@ -11,7 +11,7 @@ func (c *Client) GetMembers(roomID int64) ([]Account, error) {
 	var accounts []Account
 
 	b, err := c.GetMembersRaw(roomID)
-	err = setSturctFromJSON(b, &accounts, err)
+	err = setStructFromJSON(b, &accounts, err)
 	return accounts, err
 }
 
@@ -29,7 +29,7 @@ func (c *Client) PutMembers(roomID int64, membersAdminIDs []int64, membersMember
 	}{}
 
 	b, err := c.PutMembersRaw(roomID, membersAdminIDs, membersMemberIDs, membersReadonlyIDs)
-	err = setSturctFromJSON(b, &responseJSON, err)
+	err = setStructFromJSON(b, &responseJSON, err)
 	return responseJSON.Admin, responseJSON.Member, responseJSON.Readonly, err
 }
 

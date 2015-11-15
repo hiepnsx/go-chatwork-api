@@ -9,7 +9,7 @@ func (c *Client) GetContacts() ([]Account, error) {
 	var accounts []Account
 
 	b, err := c.GetContactsRaw()
-	err = setSturctFromJSON(b, &accounts, err)
+	err = setStructFromJSON(b, &accounts, err)
 	return accounts, err
 }
 

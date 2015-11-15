@@ -2,6 +2,7 @@ package gochatwork
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 // Me is /me response struct
@@ -98,10 +99,23 @@ type File struct {
 	DownloadURL string `json:"download_url"`
 }
 
-func setSturctFromJSON(b []byte, v interface{}, err error) error {
+// Errors is error response struct
+type Errors struct {
+	Errors []string
+}
+
+func setStructFromJSON(b []byte, v interface{}, err error) error {
 	if err != nil {
 		return err
 	}
 
+	// check error response
+	var errors Errors
+	json.Unmarshal(b, &errors)
+	if len(errors.Errors) != 0 {
+		return fmt.Errorf("%v", errors.Errors)
+	}
+
+	// not error response
 	return json.Unmarshal(b, &v)
 }

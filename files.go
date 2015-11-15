@@ -10,7 +10,7 @@ func (c *Client) GetFiles(roomID int64, accountID int64) ([]File, error) {
 	var files []File
 
 	b, err := c.GetFilesRaw(roomID, accountID)
-	err = setSturctFromJSON(b, &files, err)
+	err = setStructFromJSON(b, &files, err)
 	return files, err
 }
 
@@ -28,7 +28,7 @@ func (c *Client) GetSpecificFiles(roomID int64, fileID int64, createDownloadURL 
 	var file File
 
 	b, err := c.GetSpecificFilesRaw(roomID, fileID, createDownloadURL)
-	err = setSturctFromJSON(b, &file, err)
+	err = setStructFromJSON(b, &file, err)
 	return file, err
 }
 
