@@ -8,7 +8,7 @@ import (
 
 func CheckFile(v *TestValue, f File) {
 	So(f.FileID, ShouldEqual, v.GetInt64())
-	CheckAccount(v, f.Account)
+	CheckAccountLite(v, f.Account)
 	So(f.MessageID, ShouldEqual, v.GetInt64())
 	So(f.Filename, ShouldEqual, v.GetString())
 	So(f.Filesize, ShouldEqual, v.GetInt64())

@@ -21,7 +21,7 @@ func TestGetMembers(t *testing.T) {
 	"organization_id":5,
 	"organization_name":"string_6",
 	"department":"string_7",
-	"avatar_image_url":"https://string_8"
+	"avatar_image_url":"string_8"
   },{
 	"account_id":9,
 	"role":"string_10",
@@ -30,7 +30,7 @@ func TestGetMembers(t *testing.T) {
 	"organization_id":13,
 	"organization_name":"string_14",
 	"department":"string_15",
-	"avatar_image_url":"https://string_16"
+	"avatar_image_url":"string_16"
   }
 ]
 `
@@ -49,25 +49,8 @@ func TestGetMembers(t *testing.T) {
 
 			v := &TestValue{}
 			v.Count = 1
-			account := accounts[0]
-			So(account.AccountID, ShouldEqual, v.GetInt64())
-			So(account.Role, ShouldEqual, v.GetString())
-			So(account.Name, ShouldEqual, v.GetString())
-			So(account.ChatworkID, ShouldEqual, v.GetString())
-			So(account.OrganizationID, ShouldEqual, v.GetInt64())
-			So(account.OrganizationName, ShouldEqual, v.GetString())
-			So(account.Department, ShouldEqual, v.GetString())
-			So(account.AvatarImageURL, ShouldEqual, "https://"+v.GetString())
-
-			account = accounts[1]
-			So(account.AccountID, ShouldEqual, v.GetInt64())
-			So(account.Role, ShouldEqual, v.GetString())
-			So(account.Name, ShouldEqual, v.GetString())
-			So(account.ChatworkID, ShouldEqual, v.GetString())
-			So(account.OrganizationID, ShouldEqual, v.GetInt64())
-			So(account.OrganizationName, ShouldEqual, v.GetString())
-			So(account.Department, ShouldEqual, v.GetString())
-			So(account.AvatarImageURL, ShouldEqual, "https://"+v.GetString())
+			CheckAccount(v, accounts[0])
+			CheckAccount(v, accounts[1])
 		})
 
 		Convey("GetMembersRaw", func() {

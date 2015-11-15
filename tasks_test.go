@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func CheckAccount(v *TestValue, a Account) {
+func CheckAccountLite(v *TestValue, a Account) {
 	So(a.AccountID, ShouldEqual, v.GetInt64())
 	So(a.Name, ShouldEqual, v.GetString())
 	So(a.AvatarImageURL, ShouldEqual, v.GetString())
@@ -15,8 +15,8 @@ func CheckAccount(v *TestValue, a Account) {
 
 func CheckTask(v *TestValue, t Task) {
 	So(t.TaskID, ShouldEqual, v.GetInt64())
-	CheckAccount(v, t.Account)
-	CheckAccount(v, t.AssignedByAccount)
+	CheckAccountLite(v, t.Account)
+	CheckAccountLite(v, t.AssignedByAccount)
 	So(t.MessageID, ShouldEqual, v.GetInt64())
 	So(t.Body, ShouldEqual, v.GetString())
 	So(t.LimitTime, ShouldEqual, v.GetInt64())
