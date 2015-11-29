@@ -8,7 +8,7 @@ import (
 	"net/url"
 )
 
-func main() {
+func my() {
 	token := os.Getenv("CHATWORK_API_TOKEN")
 	if token == "" {
 		fmt.Println("skip this test because no token")
