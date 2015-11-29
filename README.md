@@ -1,3 +1,5 @@
+[![Circle CI](https://circleci.com/gh/ota42y/go-chatwork-api.svg?style=svg)](https://circleci.com/gh/ota42y/go-chatwork-api)
+[![GoDoc](https://godoc.org/github.com/ota42y/go-chatwork-api?status.svg)](https://godoc.org/github.com/ota42y/go-chatwork-api)
 
 Chatwork api client for golang.
 
