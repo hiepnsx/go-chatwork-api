@@ -1,5 +1,6 @@
 [![Circle CI](https://circleci.com/gh/ota42y/go-chatwork-api.svg?style=svg)](https://circleci.com/gh/ota42y/go-chatwork-api)
 [![GoDoc](https://godoc.org/github.com/ota42y/go-chatwork-api?status.svg)](https://godoc.org/github.com/ota42y/go-chatwork-api)
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/ota42y/go-chatwork-api/LICENSE.txt)
 
 Chatwork api client for golang.
 
@@ -42,3 +43,6 @@ Full api support. (in 2015/11)
 - [x] /contacts
 - [x] /rooms
 
+
+# License
+MIT: [https://github.com/ota42y/go-chatwork-api/LICENSE.txt](https://github.com/ota42y/go-chatwork-api/LICENSE.txt)
