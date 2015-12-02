@@ -1,4 +1,5 @@
 [![Circle CI](https://circleci.com/gh/ota42y/go-chatwork-api.svg?style=svg)](https://circleci.com/gh/ota42y/go-chatwork-api)
+[![Coverage Status](https://coveralls.io/repos/ota42y/go-chatwork-api/badge.svg?branch=master&service=github)](https://coveralls.io/github/ota42y/go-chatwork-api?branch=master)
 [![GoDoc](https://godoc.org/github.com/ota42y/go-chatwork-api?status.svg)](https://godoc.org/github.com/ota42y/go-chatwork-api)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/ota42y/go-chatwork-api/LICENSE.txt)
 
